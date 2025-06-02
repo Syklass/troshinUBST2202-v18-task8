@@ -6,12 +6,19 @@
 ## Как это работает
 - Workflow запускается автоматически при push, pull request или вручную через вкладку Actions.
 - Используется официальный образ `alpine/openssl:latest` с Docker Hub.
-- Сканирование выполняется с помощью Trivy.
+- Сканирование выполняется с помощью Trivy, который запускается через Docker (без использования actions).
 - Если найдены уязвимости уровня HIGH или CRITICAL, workflow завершится с ошибкой.
 - Если таких уязвимостей нет — workflow будет успешным.
 
 ## Файл workflow
 Файл находится по пути: `.github/workflows/trivy-scan.yml`
+
+## Основные шаги workflow
+1. Checkout репозитория
+2. Запуск Trivy через Docker:
+   ```sh
+   docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 1 --severity HIGH,CRITICAL alpine/openssl:latest
+   ```
 
 ## Автор
 Выполнено студентом группы УБСТ2202 Трошиным В.А.
