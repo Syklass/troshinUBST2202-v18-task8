@@ -1,0 +1,23 @@
+# Выполнено студентом группы УБСТ2202 Трошиным В.А.
+
+name: Trivy Scan Docker Image 
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.16.0
+        with:
+          image-ref: 'alpine/openssl:latest'
+          format: 'table'
+          exit-code: '1'
+          severity: 'HIGH,CRITICAL'
